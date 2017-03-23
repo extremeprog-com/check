@@ -24,7 +24,8 @@ describe('check', function() {
     });
 
     it('should return JSON.stringify in proper format', function() {
-      var expected = JSON.stringify({$check: {eq: 5}});
+      // TODO convert arguments to string, so we must expect 5 as string
+      var expected = JSON.stringify({$check: {eq: "5"}});
       expect(JSON.stringify(check.eq(5))).to.be.equal(expected);
     });
   })
