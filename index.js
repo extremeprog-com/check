@@ -1,11 +1,44 @@
 (function() {
   var checker = Object.create(null);
 
+  function isArray(arg) {
+    return arg instanceof Array;
+  }
+
+  function isObject(arg) {
+    return arg instanceof Object; // weak check, need to improve
+  }
+
+  function deepEqual(input, inputToCompare) {
+    if (input === inputToCompare) {
+      return true;
+    }
+
+    var walkThrough;
+    if (isArray(input) && isArray(inputToCompare) && input.length === inputToCompare.length) {
+      walkThrough = input;
+    } else if (isObject(input) && isObject(inputToCompare) && Object.getOwnPropertyNames(input).length === Object.getOwnPropertyNames(inputToCompare).length) {
+      walkThrough = Object.getOwnPropertyNames(input);
+    }
+
+    if (isArray(walkThrough)) {
+      for (var i in walkThrough) {
+        if (!deepEqual(input[i], inputToCompare[i])) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
   var checkers = [{
     name: 'eq',
     initArgsChecker: argsCheckExactLength(1),
     check: function(initArgs, checkArgs) {
-      return initArgs[0] === checkArgs[0];
+      return deepEqual(initArgs[0], checkArgs[0])
     }
   }, {
     name: 'gt',

@@ -35,13 +35,56 @@ describe('check', function() {
       expect(check.eq("4").check(4)).to.be.false;
     });
 
-    it('should return JSON.stringify in proper format', function() {
-      var expected = JSON.stringify({$check: {eq: 5}});
-      expect(JSON.stringify(check.eq(5))).to.be.equal(expected);
+    describe('nested arrays', function() {
+      it('should properly check arrays', function() {
+        expect(check.eq([1, 2, 3]).check([1, 2, 3])).to.be.true;
+      });
+
+      it('should property check nested arrays', function() {
+        expect(check.eq([1, [4, 5, 6], 3]).check([1, [4, 5, 6], 3])).to.be.true;
+      });
+
+      it('should property check by reference', function() {
+        var arr = [1, [4, 5, 6], 3];
+        expect(check.eq(arr).check(arr)).to.be.true;
+      });
+
+      it('should consider order in arrays', function() {
+        expect(check.eq([1, 2, 3]).check([3, 2, 1])).to.be.false;
+      });
+
+      it('should return false if arrays length different', function() {
+        expect(check.eq([1, 2, 3]).check([1, 2])).to.be.false;
+      });
+    });
+
+    describe('nested objects', function() {
+      it('should properly check objects', function() {
+        expect(check.eq({x: 1, z: 2}).check({z: 2, x: 1})).to.be.true;
+      });
+
+      it('should check nested objects', function() {
+        expect(check.eq({x: 1, z: { v: 3 }}).check({z: {v: 3}, x: 1})).to.be.true;
+      });
+
+      it('should property check by reference', function() {
+        var obj = {x: 1, z: { v: 3 }};
+        expect(check.eq(obj).check(obj)).to.be.true;
+      });
+
+      it('should return false if obj keys length different', function() {
+        expect(check.eq({x: 1, y: 2}).check({x: 1, y: 2, z: 3})).to.be.false;
+      })
+
+      it('should properly check null', function() {
+        expect(check.eq(null).check(null)).to.be.true;
+        expect(check.eq(null).check({x: 1, y: 2})).to.be.false;
+        expect(check.eq({x: 1, y: 2}).check(null)).to.be.false;
+      });
     });
   });
 
-  describe('checker JSON.stringify format', function() {
+  describe('checker JSON.stringify format', function() {    
     it('should return true if no input args present', function() {
       var expected = JSON.stringify({$check: {isNaN: true}});
       var result = JSON.stringify(check.isNaN());
