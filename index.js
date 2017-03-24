@@ -22,6 +22,17 @@ var checkers = [{
   }
 }];
 
+var formatArgs = function(args) {
+  switch (args.length) {
+    case 0:
+      return true;
+    case 1:
+      return args[0];
+    default:
+      return args;
+  }
+};
+
 var checker = {};
 
 for (const checkerItem of checkers) {
@@ -35,7 +46,7 @@ for (const checkerItem of checkers) {
             return checkerItem.check.call(null, initArgs, checkArgs);
           },
           toJSON: function() {
-            return {$check: {[checkerItem.name]: initArgs.join()}}
+            return {$check: {[checkerItem.name]: formatArgs(initArgs)}}
           }
         }
       };

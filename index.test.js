@@ -24,9 +24,28 @@ describe('check', function() {
     });
 
     it('should return JSON.stringify in proper format', function() {
-      // TODO convert arguments to string, so we must expect 5 as string
-      var expected = JSON.stringify({$check: {eq: "5"}});
+      var expected = JSON.stringify({$check: {eq: 5}});
       expect(JSON.stringify(check.eq(5))).to.be.equal(expected);
     });
-  })
+  });
+
+  describe('checker JSON.stringify format', function() {
+    it('should return true if no input args present', function() {
+      var expected = JSON.stringify({$check: {eq: true}});
+      var result = JSON.stringify(check.eq());
+      expect(result).to.be.equal(expected);
+    });
+
+    it('should return argument itself if one input args present', function() {
+      var expected = JSON.stringify({$check: {eq: 1}});
+      var result = JSON.stringify(check.eq(1));
+      expect(result).to.be.equal(expected);
+    });
+
+    it('should return array of arguments if more than one input args present', function() {
+      var expected = JSON.stringify({$check: {btw: [1, 2]}});
+      var result = JSON.stringify(check.btw(1, 2));
+      expect(result).to.be.equal(expected);
+    });
+  });
 });
