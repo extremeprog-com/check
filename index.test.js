@@ -1,5 +1,10 @@
-var expect = require('chai').expect;
-var check = require('./index.js');
+if (typeof require !== 'undefined') {
+  var expect = require('chai').expect;
+  var check = require('./index.js');
+} else {
+  var expect = window.chai.expect;
+  var check = window.check;
+}
 
 describe('check', function() {
   it('should be an object', function() {
