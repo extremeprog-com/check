@@ -1,13 +1,5 @@
 (function() {
-  function argsCheckExactLength(expectedArgumentsLength) {
-    return function(args, checkerName) {
-      if (args.length === expectedArgumentsLength) {
-        return true;
-      }
-
-      throw new Error('Checker "' + checkerName + '" expect exactly ' + expectedArgumentsLength + ' argument' + (expectedArgumentsLength > 1 ? 's' : '') + ', got ' + args.length);
-    }
-  };
+  var checker = Object.create(null);
 
   var checkers = [{
     name: 'eq',
@@ -41,7 +33,21 @@
     }
   }];
 
-  var formatArgs = function(args) {
+  for (var checkerIndex in checkers) {
+    defineChecker(checkers[checkerIndex]);
+  }
+
+  function argsCheckExactLength(expectedArgumentsLength) {
+    return function(args, checkerName) {
+      if (args.length === expectedArgumentsLength) {
+        return true;
+      }
+
+      throw new Error('Checker "' + checkerName + '" expect exactly ' + expectedArgumentsLength + ' argument' + (expectedArgumentsLength > 1 ? 's' : '') + ', got ' + args.length);
+    }
+  };
+
+  function formatArgs(args) {
     switch (args.length) {
       case 0:
         return true;
@@ -52,9 +58,7 @@
     }
   };
 
-  var checker = {};
-
-  for (const checkerItem of checkers) {
+  function defineChecker(checkerItem) {
     Object.defineProperty(checker, checkerItem.name, {
       get: function() {
         return function() {
@@ -68,7 +72,9 @@
               return checkerItem.check.call(null, initArgs, checkArgs);
             },
             toJSON: function() {
-              return {$check: {[checkerItem.name]: formatArgs(initArgs)}}
+              var $check = {};
+              $check[checkerItem.name] = formatArgs(initArgs);
+              return {$check: $check}
             }
           }
         };

@@ -1,9 +1,12 @@
-if (typeof require !== 'undefined') {
+if (typeof require === 'function') {
   var expect = require('chai').expect;
-  var check = require('./index.js');
+  var check = require('../index.js');
+}
+else if (typeof window !== 'undefined') {
+  var expect = chai.expect;
+  // check defined in window
 } else {
-  var expect = window.chai.expect;
-  var check = window.check;
+  throw new Error('Unknown environment. Cannot be loaded.');
 }
 
 describe('check', function() {
