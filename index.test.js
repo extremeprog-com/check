@@ -16,11 +16,11 @@ describe('check', function() {
     });
 
     it('should return true for equal arguments', function() {
-      expect(check.eq(5).check(5)).to.be.equal(true);
+      expect(check.eq(5).check(5)).to.be.true;
     });
 
     it('should return false for unequal arguments', function() {
-      expect(check.eq(5).check(4)).to.be.equal(false);
+      expect(check.eq(5).check(4)).to.be.false;
     });
 
     it('should return JSON.stringify in proper format', function() {
