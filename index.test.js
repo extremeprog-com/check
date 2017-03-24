@@ -11,8 +11,12 @@ describe('check', function() {
       expect(check.eq).to.be.a('function');
     });
 
+    it('should throw an error without input arguments', function() {
+      expect(check.eq).to.throw(Error);
+    });
+
     it('should have an property check', function() {
-      expect(check.eq()).to.have.property('check');
+      expect(check.eq(3)).to.have.property('check');
     });
 
     it('should return true for equal arguments', function() {
@@ -20,7 +24,7 @@ describe('check', function() {
     });
 
     it('should return false for unequal arguments', function() {
-      expect(check.eq(5).check(4)).to.be.false;
+      expect(check.eq("4").check(4)).to.be.false;
     });
 
     it('should return JSON.stringify in proper format', function() {
@@ -31,8 +35,8 @@ describe('check', function() {
 
   describe('checker JSON.stringify format', function() {
     it('should return true if no input args present', function() {
-      var expected = JSON.stringify({$check: {eq: true}});
-      var result = JSON.stringify(check.eq());
+      var expected = JSON.stringify({$check: {isNaN: true}});
+      var result = JSON.stringify(check.isNaN());
       expect(result).to.be.equal(expected);
     });
 

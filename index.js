@@ -1,24 +1,42 @@
-// TODO: try Proxy ES6 feature
+function argsCheckExactLength(expectedArgumentsLength) {
+  return function(args, checkerName) {
+    if (args.length === expectedArgumentsLength) {
+      return true;
+    }
+
+    throw new Error('Checker "' + checkerName + '" expect exactly ' + expectedArgumentsLength + ' argument' + (expectedArgumentsLength > 1 ? 's' : '') + ', got ' + args.length);
+  }
+};
 
 var checkers = [{
   name: 'eq',
+  initArgsChecker: argsCheckExactLength(1),
   check: function(initArgs, checkArgs) {
     return initArgs[0] === checkArgs[0];
   }
 }, {
   name: 'gt',
+  initArgsChecker: argsCheckExactLength(1),
   check: function(initArgs, checkArgs) {
     return initArgs[0] > checkArgs[0];
   }
 }, {
   name: 'lt',
+  initArgsChecker: argsCheckExactLength(1),
   check: function(initArgs, checkArgs) {
     return initArgs[0] < checkArgs[0];
   }
 }, {
   name: 'btw',
+  initArgsChecker: argsCheckExactLength(2),
   check: function(initArgs, checkArgs) {
     return (initArgs[0] < checkArgs[0]) && (checkArgs[0] < initArgs[1]);
+  }
+}, {
+  name: 'isNaN',
+  initArgsChecker: argsCheckExactLength(0),
+  check: function(initArgs, checkArgs) {
+    return isNaN(checkerArgs[0]);
   }
 }];
 
@@ -40,6 +58,9 @@ for (const checkerItem of checkers) {
     get: function() {
       return function() {
         var initArgs = Array.prototype.slice.call(arguments);
+
+        typeof checkerItem.initArgsChecker === "function" && checkerItem.initArgsChecker(initArgs, checkerItem.name);
+
         return {
           check: function() {
             var checkArgs = Array.prototype.slice.call(arguments);
