@@ -40,11 +40,11 @@ describe('check', function() {
         expect(check.eq([1, 2, 3]).check([1, 2, 3])).to.be.true;
       });
 
-      it('should property check nested arrays', function() {
+      it('should properly check nested arrays', function() {
         expect(check.eq([1, [4, 5, 6], 3]).check([1, [4, 5, 6], 3])).to.be.true;
       });
 
-      it('should property check by reference', function() {
+      it('should properly check by reference', function() {
         var arr = [1, [4, 5, 6], 3];
         expect(check.eq(arr).check(arr)).to.be.true;
       });
@@ -55,6 +55,12 @@ describe('check', function() {
 
       it('should return false if arrays length different', function() {
         expect(check.eq([1, 2, 3]).check([1, 2])).to.be.false;
+      });
+
+      it('should properly check empty arrays', function() {
+        expect(check.eq([]).check([])).to.be.true;
+        expect(check.eq([]).check([3, 4, 5])).to.be.false;
+        expect(check.eq([5, 6, 7]).check([])).to.be.false;
       });
     });
 
@@ -67,7 +73,7 @@ describe('check', function() {
         expect(check.eq({x: 1, z: { v: 3 }}).check({z: {v: 3}, x: 1})).to.be.true;
       });
 
-      it('should property check by reference', function() {
+      it('should properly check by reference', function() {
         var obj = {x: 1, z: { v: 3 }};
         expect(check.eq(obj).check(obj)).to.be.true;
       });
@@ -82,9 +88,15 @@ describe('check', function() {
         expect(check.eq({x: 1, y: 2}).check(null)).to.be.false;
       });
     });
+
+    describe('nested objects and arrays', function() {
+      it('should check nested obejects and arrays', function() {
+        expect(check.eq({x: [1, 5, 6, 2], h: {h: 2, x: 4, u: []}}).check({h: {u: [], h: 2, x: 4}, x: [1, 5, 6, 2]})).to.be.true;
+      });
+    });
   });
 
-  describe('checker JSON.stringify format', function() {    
+  describe('checker JSON.stringify format', function() {
     it('should return true if no input args present', function() {
       var expected = JSON.stringify({$check: {isNaN: true}});
       var result = JSON.stringify(check.isNaN());

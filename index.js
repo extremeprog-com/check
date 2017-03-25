@@ -16,14 +16,23 @@
 
     var walkThrough;
     if (isArray(input) && isArray(inputToCompare) && input.length === inputToCompare.length) {
-      walkThrough = input;
-    } else if (isObject(input) && isObject(inputToCompare) && Object.getOwnPropertyNames(input).length === Object.getOwnPropertyNames(inputToCompare).length) {
-      walkThrough = Object.getOwnPropertyNames(input);
-    }
-
-    if (isArray(walkThrough)) {
-      for (var i in walkThrough) {
+      for (var i=0; i<input.length; i++) {
         if (!deepEqual(input[i], inputToCompare[i])) {
+          return false;
+        }
+      }
+
+      return true;
+    } else if (isObject(input) && isObject(inputToCompare) && Object.getOwnPropertyNames(input).length === Object.getOwnPropertyNames(inputToCompare).length) {
+      if (typeof input.hasOwnProperty !== 'function' || typeof inputToCompare.hasOwnProperty !== 'function') {
+        return false;
+      }
+      for (var propertyName in input) {
+        if (!input.hasOwnProperty(propertyName) || !inputToCompare.hasOwnProperty(propertyName)) {
+          continue;
+        }
+
+        if (!deepEqual(input[propertyName], inputToCompare[propertyName])) {
           return false;
         }
       }
