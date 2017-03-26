@@ -96,6 +96,111 @@ describe('check', function() {
     });
   });
 
+  describe('check.gt', function() {
+    it('should be an function', function() {
+      expect(check.gt).to.be.a('function');
+    });
+
+    it('should throw an error without input arguments', function() {
+      expect(check.gt).to.throw(Error);
+    });
+
+    it('should have an property check', function() {
+      expect(check.gt(3)).to.have.property('check');
+    });
+
+    it('should return true for argument greater than passed to check method', function() {
+      expect(check.gt(5).check(6)).to.be.true;
+    });
+
+    it('should return false for argument greater than passed to check method', function() {
+      expect(check.gt(5).check(4)).to.be.false;
+    });
+  });
+
+  describe('check.gt', function() {
+    it('should be an function', function() {
+      expect(check.lt).to.be.a('function');
+    });
+
+    it('should throw an error without input arguments', function() {
+      expect(check.lt).to.throw(Error);
+    });
+
+    it('should have an property check', function() {
+      expect(check.lt(3)).to.have.property('check');
+    });
+
+    it('should return true for argument lower than passed to check method', function() {
+      expect(check.lt(5).check(4)).to.be.true;
+    });
+
+    it('should return false for argument lower than passed to check method', function() {
+      expect(check.lt(5).check(6)).to.be.false;
+    });
+  });
+
+  describe('check.btw', function() {
+    it('should be an function', function() {
+      expect(check.btw).to.be.a('function');
+    });
+
+    it('should throw an error without input arguments', function() {
+      expect(check.btw).to.throw(Error);
+    });
+
+    it('should throw an error with one input argument', function() {
+      expect(check.btw.bind(check, 1)).to.throw(Error);
+    });
+
+    it('should throw an error with more than two input arguments', function() {
+      expect(check.btw.bind(check, 1, 2, 3)).to.throw(Error);
+    });
+
+    it('should have an property check', function() {
+      expect(check.btw(3, 5)).to.have.property('check');
+    });
+
+    it('should return true if argument passed to check method inside period', function() {
+      expect(check.btw(3, 5).check(4)).to.be.true;
+    });
+
+    it('should return false if argument passed to check method outside period', function() {
+      expect(check.btw(3, 5).check(6)).to.be.false;
+    });
+  });
+
+  describe('check.isNaN', function() {
+    it('should be an function', function() {
+      expect(check.isNaN).to.be.a('function');
+    });
+
+    it('should not throw an error without input arguments', function() {
+      expect(check.isNaN).to.not.throw(Error);
+    });
+
+    it('should throw an error with any count of input arguments', function() {
+      expect(check.isNaN.bind(check, 1)).to.throw(Error);
+      expect(check.isNaN.bind(check, 1, 2)).to.throw(Error);
+      expect(check.isNaN.bind(check, 1, 2, 4)).to.throw(Error);
+    });
+
+    it('should have an property check', function() {
+      expect(check.isNaN()).to.have.property('check');
+    });
+
+    it('should return true if argument passed to check method is not a number', function() {
+      expect(check.isNaN().check("a")).to.be.true;
+      expect(check.isNaN().check("3.4.5")).to.be.true;
+    });
+
+    it('should return false if argument passed to check method is number', function() {
+      expect(check.isNaN().check(6)).to.be.false;
+      expect(check.isNaN().check("6")).to.be.false;
+      expect(check.isNaN().check("6.7")).to.be.false;
+    });
+  });
+
   describe('checker JSON.stringify format', function() {
     it('should return true if no input args present', function() {
       var expected = JSON.stringify({$check: {isNaN: true}});
