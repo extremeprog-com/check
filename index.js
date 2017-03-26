@@ -53,13 +53,13 @@
     name: 'gt',
     initArgsChecker: argsCheckExactLength(1),
     check: function(initArgs, checkArgs) {
-      return initArgs[0] > checkArgs[0];
+      return initArgs[0] < checkArgs[0];
     }
   }, {
     name: 'lt',
     initArgsChecker: argsCheckExactLength(1),
     check: function(initArgs, checkArgs) {
-      return initArgs[0] < checkArgs[0];
+      return initArgs[0] > checkArgs[0];
     }
   }, {
     name: 'btw',
@@ -71,7 +71,7 @@
     name: 'isNaN',
     initArgsChecker: argsCheckExactLength(0),
     check: function(initArgs, checkArgs) {
-      return isNaN(checkerArgs[0]);
+      return isNaN(checkArgs[0]);
     }
   }];
 
