@@ -7,7 +7,7 @@ An interface for various checks with ability to stringify to the readable format
 ## Append to project
 #### nodejs
 ```javascript
-var this_is = require('this-is');
+var thisIs = require('this-is');
 ```
 
 #### browser
@@ -18,12 +18,12 @@ var this_is = require('this-is');
 # Usage
 ```javascript
 
-var gt5 = this_is.gt(5);
+var gt5 = thisIs.gt(5);
 JSON.stringify(gt5); // {$check: {gt: 5}}
 gt5.check(6); // true
 gt5.check(4); // false
 
-var btw10and100 = this_is.btw(10, 100);
+var btw10and100 = thisIs.btw(10, 100);
 JSON.stringify(btw10and100); // {$check: {btw: [10, 100]}}
 btw10and100.check(0); // false
 btw10and100.check(50); // true

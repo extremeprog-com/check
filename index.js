@@ -127,7 +127,7 @@
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = checker;
   } else if (typeof window !== 'undefined') {
-    window.check = checker;
+    window.thisIs = checker;
   } else {
     throw new Error('Unknown environment. Cannot be loaded.');
   }
